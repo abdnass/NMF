@@ -1,4 +1,4 @@
-# Data Science Seminar Project on Nonnegative Matrix Factorization
+# Nonnegative Matrix Factorization applied to ???
 
 tbd
 
