@@ -1,4 +1,4 @@
-# Nonnegative Matrix Factorization applied to ???
+# Nonnegative Matrix Factorization applied to Topic Extraction
 
 tbd
 
