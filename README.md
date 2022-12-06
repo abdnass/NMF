@@ -1,6 +1,8 @@
 # Nonnegative Matrix Factorization applied to Topic Extraction
 
-tbd
+## Quick Start
+
+Clone the repository and install the requirements with `pip install -r requirements.txt` for python >=3.10. Run `test.ipynb` for an examplery topic extraction on a dataset of 18000 newsgroups posts on 20 topics.
 
 ## Sources
 
@@ -12,3 +14,4 @@ tbd
 - [Nonnegative Matrix Factorization Algorithms and Applications - Ho (2008)](https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=8116d41cb547671bb9c38ffe47574e5cdf24fa7e)
 - [The Why and How of Nonnegative Matrix Factorization - Gillis (2014)](https://arxiv.org/abs/1401.5226)
 - [NMF — A visual explainer and Python Implementation - Garla (2021)](https://towardsdatascience.com/nmf-a-visual-explainer-and-python-implementation-7ecdd73491f8)
+- [Topic extraction with Non-negative Matrix Factorization and Latent Dirichlet Allocation - Grisel et al](https://scikit-learn.org/stable/auto_examples/applications/plot_topics_extraction_with_nmf_lda.html)
