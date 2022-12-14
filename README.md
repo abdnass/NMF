@@ -18,3 +18,4 @@ Clone the repository and install the requirements with `pip install -r requireme
 - [Constrained NMF-based semi-supervised learning for social media spammer detection - Yu et al (2017)](https://www.sciencedirect.com/science/article/abs/pii/S0950705117301533)
 - [Email Surveillance Using Non-negative Matrix Factorization - Berry, Browne (2005)](https://link.springer.com/content/pdf/10.1007/s10588-005-5380-5.pdf)
 - [Algorithms for nonnegative matrix factorization with the beta-divergence - Févotte, Idier (2010)](https://arxiv.org/abs/1010.1763)
+- [Fast Local Algorithms for Large Scale Nonnegative Matrix and Tensor Factorizations - Cichocki, Phan (2009)](https://www.researchgate.net/profile/Anh-Huy-Phan/publication/220241471_Fast_Local_Algorithms_for_Large_Scale_Nonnegative_Matrix_and_Tensor_Factorizations/links/00b7d519df30965c23000000/Fast-Local-Algorithms-for-Large-Scale-Nonnegative-Matrix-and-Tensor-Factorizations.pdf)
