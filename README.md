@@ -17,3 +17,4 @@ Clone the repository and install the requirements with `pip install -r requireme
 - [Topic extraction with Non-negative Matrix Factorization and Latent Dirichlet Allocation - Grisel et al](https://scikit-learn.org/stable/auto_examples/applications/plot_topics_extraction_with_nmf_lda.html)
 - [Constrained NMF-based semi-supervised learning for social media spammer detection - Yu et al (2017)](https://www.sciencedirect.com/science/article/abs/pii/S0950705117301533)
 - [Email Surveillance Using Non-negative Matrix Factorization - Berry, Browne (2005)](https://link.springer.com/content/pdf/10.1007/s10588-005-5380-5.pdf)
+- [Algorithms for nonnegative matrix factorization with the beta-divergence - Févotte, Idier (2010)](https://arxiv.org/abs/1010.1763)
