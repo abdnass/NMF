@@ -1,5 +1,7 @@
-pandas
+jupyter
+numpy
+scipy
 scikit-learn
 nltk
-jupyter
+pandas
 matplotlib

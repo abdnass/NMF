@@ -20,3 +20,4 @@ Clone the repository and install the requirements with `pip install -r requireme
 - [Algorithms for nonnegative matrix factorization with the beta-divergence - Févotte, Idier (2010)](https://arxiv.org/abs/1010.1763)
 - [Fast Local Algorithms for Large Scale Nonnegative Matrix and Tensor Factorizations - Cichocki, Phan (2009)](https://www.researchgate.net/profile/Anh-Huy-Phan/publication/220241471_Fast_Local_Algorithms_for_Large_Scale_Nonnegative_Matrix_and_Tensor_Factorizations/links/00b7d519df30965c23000000/Fast-Local-Algorithms-for-Large-Scale-Nonnegative-Matrix-and-Tensor-Factorizations.pdf)
 - [Fast Coordinate Descent Methods with Variable Selection for Non-negative Matrix Factorization - Hsieh, Dhillon (2011)](https://www.cs.utexas.edu/~cjhsieh/nmf_kdd11.pdf)
+- [Exploring the Space of Topic Coherence Measures - Röder et al (2015)](http://svn.aksw.org/papers/2015/WSDM_Topic_Evaluation/public.pdf)
