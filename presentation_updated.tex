@@ -47,6 +47,7 @@
 \usepackage{algorithm2e}
 \usepackage{optidef}
 \usepackage{epigraph}
+\usepackage{array}
 
 
 \begin{document}
@@ -125,9 +126,9 @@
     From the KKT-Conditions simple characteristics of the solutions can be derived:
     \begin{block}{Theorem}
         Suppose \( (W,H)\) be a stationary point of the problem, then it holds:
-        \[ \frac{1}{2} \|A - WH^T\|^2 = \frac{1}{2} (\|A\|^2 - \|WH^T\|^2 )\]
+        \[ \frac{1}{2} \|A - WH\|^2 = \frac{1}{2} (\|A\|^2 - \|WH\|^2 )\]
     \end{block}
-    This furthermore implies that \( \|A\|^2 \geq \|WH^T\|^2\), which is only fulfilled at the exact factorization.
+    This furthermore implies that \( \|A\|^2 \geq \|WH\|^2\), which is only fulfilled at the exact factorization.
 \end{frame}
 
 \begin{frame}{Coordinate Descent}
@@ -153,22 +154,22 @@
     % nonnegative rank
     Now consider the case where $A$ is exactly factorized by $WH^T$.
     \begin{block}{minimal rank}
-        The smallest $r$ such that \(\exists W \in \mathbb{R}^{m \times r}_+ \ and \ H \in \mathbb{R}^{r \times n}_+\) such that $A=WH^T$, is called the \emph{inner rank} and denoted by $rank_{WH^T}^+ (A)$. 
+        The smallest $r$ such that \(\exists W \in \mathbb{R}^{m \times r}_+ \ and \ H \in \mathbb{R}^{r \times n}_+\) such that $A=WH$, is called the \emph{inner rank} and denoted by $rank_{WH}^+ (A)$. 
     \end{block}
 
 \end{frame}
 
 \begin{frame}{Exact Factorization}
     \begin{block}{Lemma}
-        \[ rank(A) \leq rank_{WH^T}^+ (A) \leq \min(m,n)\]
+        \[ rank(A) \leq rank_{WH}^+ (A) \leq \min(m,n)\]
     \end{block}
     
-    \[\text{existence of exact factorization of $A$ of rank $r$} \iff \text{determining } rank_{WH^T}^+ (A) \]
+    \[\text{existence of exact factorization of $A$ of rank $r$} \iff \text{determining } rank_{WH}^+ (A) \]
 \end{frame}
 
 \begin{frame}{Determining the inner rank}
     One algorithm to determine if $A$ can be factorized with \emph{inner rank} $r$ would be the Renegar algorithm, which scales $(6mn)^{\mathcal{O}(mn)}$. \\
-    Since $rank_{WH^T}^+ (A) \leq \min(m,n)$ this can be done in finite time.
+    Since $rank_{WH}^+ (A) \leq \min(m,n)$ this can be done in finite time.
     \begin{block}{Vavasis, 2008}
         \begin{itemize}
             \item exact \emph{NMF} is \emph{NP-hard}
@@ -222,130 +223,42 @@
     \end{block}
 \end{frame}
 \begin{frame}
-    \frametitle{Proof}
-    \begin{definition}[Auxilary Function]
-        A function $G(h, k)$ is called an auxiliary function for $f(h) $if:\\
-        $1. G(h,h) = f(h)$\\
-        $2. G(h,k) \geq f(h)$ for all $k$. 
-    \end{definition}
-    The following lemma illustrates why the concept of auxiliary function can be useful to
-    minimize $F(h)$ and to find a local minimum.
-    \begin{lemma}[Iterative minimization, Lee and Seung, 2001)]
-        If $G$ is an auxiliary function, then $F$ is nonincreasing under the update\\
-        \begin{align}
-            F(h^{t+1}) = \underset{h}{\mathrm{argmin}}G(h, h^{t})
-        \end{align}
-    \end{lemma}
-\end{frame}
-\begin{frame}
-    \textbf{Proof}:\\
-    $F(h^{t+1}) \leq G(h^{t+1}, h^{t}) \leq G(h^{t}, h^{t}) = F(h^{t})$\\
-    Let us now construct an Auxilary Function for our Loss function
-    \begin{lemma}
-        If $K(h^{t})$ is the diagonal matrix
-        \begin{align*}
-            K_{ij} = \delta_{ij}\frac{(W^{T}Wh^{t})_{i}}{h_{i}^{t}}
-        \end{align*}
-        then 
-        \begin{align}
-            G(h, h^{t}) = F(h^{t}) + (h + h^{t})^{T}\nabla F(h^{t}) + \frac{1}{2}
-            (h - h^{t})^{T}K(h^{t})(h - h^{t})
-        \end{align}
-        is an auxilary function for 
-        \begin{align}
-            F(h) = \frac{1}{2}\sum_{k}(m_{k} - (Wh)_{k})
-        \end{align}
-    \end{lemma}
-\end{frame}
-\begin{frame}
-    \textbf{Proof:}\\
-    $G(h, h) = F(h)$, follows from the difinition of $G$, now we need $G(h,k) \leq F(h) \hspace{0.1in} \forall k$\\
-    see \href{https://proceedings.neurips.cc/paper/2000/file/f9d1152547c0bde01830b7e8bd60024c-Paper.pdf}
-    {Here for the proof}.\\
-    With all this preliminary work the proof of our Theorem  can be demonstrated.
-\end{frame}
-\begin{frame}
-        \textbf{Proof:}\\
-        Using the auxiliary function, which was defined in the previous Lemma and solving (2)
-        by setting the gradient to zero leads to the update rule:
-        \begin{align*}
-            h^{t+1} = h^{t} - K(h^{t})^{-1}\nabla F(h^{t})
-        \end{align*}
-        According to the Iterative minimization Lemma, F is non-increasing under this update
-        rule. It can be obtained
-        \begin{align*}
-            h^{t+1}_{i} = h^{t}_{i}\frac{(W^{T}m)_{i}}{(W^{t}Wh^{t})_{i}}
-        \end{align*}
-        by applying the explicit structure of $K(h^{t})^{-1}$ and $\nabla F(h^{t})$. Rewritten
-        in matrix form this is equivalent to the update rule.
-\end{frame}
-\begin{frame}
     \textbf{Weaknesses and modifications:}\\
     Lee and Seung claim that the limit of the sequence $\{W^{t}, H^{t}\}$ is a 
     stationary point (i.e., a point satisfying the KKT condition). However, Gonzales and Zhang (2005)
     indicate that this claim is wrong as having  the cost function non increasing under the update 
     may not imply the convergence.\\
     Therefore, this multiplicative update method still lacks optimization properties.\\
-    It has been repeatedly shown that the convergence is notoriously slow.
+\end{frame}
+\begin{frame}
+    we can only make the following statement about
+    the convergence of the Lee and Seung multiplicative update algorithms: When the algorithm has converged to a
+    limit point, this point is a stationary point.\\\
     
+    Also it has been repeatedly shown that the convergence is notoriously slow.
+    \end{frame}
+    \begin{frame}
     A number of modifications to the original Lee and Seung algorithms have been
     introduced with the objective to overcome these shortcomings.\\
-
+    \end{frame}
+    \begin{frame}
     For instance, Lin in 2007 proposed a modification that is guaranteed to converge to a stationary point,
     this algorithm requires more work per iteration than the already slow Lee and Seung algorithm.
 \end{frame}
 \begin{frame}
-    \begin{tcolorbox}[fit,width=\textwidth,height=.85\textheight,size=minimal,colback=white,fit algorithm=fontsize,colframe=white]
-\frametitle{Fast Multiplicative Update Rule Algorithm by Li-Xin Li, Lin Wu, Hui-Sheng Zhang, and Fang-Xiang Wu (2014)}
-\begin{algorithm}[H]
-    \caption{Fast Multiplicative Update Rule Algorithm}
-        \textbf{Initialize:} $w_{ia}^{1}, h_{bj}^{1} > 0 \hspace{0.1in}\forall i,j,a,b$\;
-        \For{$t \gets 1,2..\dots$} {
-        \eIf {w_{b}^{t} = 0}{ $h_{bj}^{t+1} = 0$, for all $j$\;
-        Where\; 
-        $w_{b}^{t}$ is the b-th column vector of $W^{t}$\;}
-        {$h_{bj}^{t+1} = max(0, \bar{h}_{bj}^{t+1})$\;
-         Where \;
-         $\bar{h}_{bj}^{t+1} = h_{bj}^{t} - \frac{1}{||w_{b}^{t}||^{2}}\frac{\partial f(W^{t},H^{t})}{\partial h_{bj}}$\;
-        }
-        \eIf {h_{a}^{t} = 0}{ $w_{ia}^{t+1} = 0$, for all $i$\;
-        Where\; 
-        $h_{a}^{t}$ is the b-th column vector of $H^{t}$\;}
-        {$w_{ia}^{t+1} = max(0, \bar{w}_{ia}^{t+1})$\;
-         Where \;
-         $\bar{w}_{ia}^{t+1} = w_{ia}^{t} - \frac{1}{||h_{a}^{t}||^{2}}\frac{\partial f(W^{t},H^{t})}{\partial w_{ia}}$\;
-        }
-        }
-\end{algorithm}
-\end{tcolorbox}
-\end{frame}
-\begin{frame}
-    \begin{theorem}
-        The presented Algorithm is (in most cases, strictly) faster than the Multiplicative Update Rule
-        Algorithm.
-    \end{theorem}
-\end{frame}
-\begin{frame}
+    \texrtbf{Fast Multiplicative Update Rule Algorithm by Li-Xin Li, Lin Wu, Hui-Sheng Zhang, and Fang-Xiang Wu (2014)}
         Li-Xin Li, Lin Wu, Hui-Sheng Zhang, and Fang-Xiang Wu Presented a comparison between the three Algorithms
         in there paper in 2014.\\
-        Three algorithms areprogrammed in MATLAB R2013a and run on a computer with the following specifications: 
+        Three algorithms are programmed in MATLAB R2013a and run on a computer with the following specifications: 
         a processor of Intel Core 2 Quad CPU Q9450 at 2.66 GHZ 2.67 GHZ and a RAM of 4 GB (3.72 GB usable)
         \textbf{Note:}\\ 
-        - Algo 2 = Multiplicative Update Rule\\
-        - Algo 3 = modified Multiplicative Update Rule\\
-        - Algo 4 = Algorithm 2
 \end{frame}
 \begin{frame}
-    \includegraphics[height = 3in]{/Users/abdelbastnassiri/Desktop/data 1.png}
-\end{frame}
-\begin{frame}
-    \includegraphics[height = 3in]{/Users/abdelbastnassiri/Desktop/data 2.png}
-\end{frame}
-\begin{frame}
-    \includegraphics[height = 3in]{/Users/abdelbastnassiri/Desktop/data 3.png}
+    \includegraphics[height = 3in]{table.jpg}
 \end{frame}
 \begin{frame}
     \frametitle{Alternating Non-negative Least Squares (ANLS)}
+    In this algorithms, a least squares step is followed by another least squares step in an alternating fashion, thus giving rise to the ALS name.\\
     The Alternating Least Squares - ALS algorithms were first introduced by Paatero 1994 , 
     who initially invented the whole NMF theory.
     \begin{algorithm}[H]
@@ -363,8 +276,25 @@
     \begin{theorem}
         Any limit point of the sequence $\{W^{t} , H^{t}\}$ generated by ALS Algorithm  is a stationary point of (\ref{op}).
     \end{theorem}
-    the advantages of the ALS is that it is fast, aids sparcity and with good implementation it can be faster 
-    than SVD    
+    \end{frame}
+    \begin{frame}{Comparison between ANLS and MU}
+    \begin{center}
+\begin{tabular}{ | m{20em} | m{20em} |} 
+  \hline
+  \textbf{ANLS}& \textbf{MU}  \\ 
+  \hline
+  - Can be very fast depending on the implementation & -easy to use  \\ 
+  - aids sparsity & \\ 
+  \hline
+  - once an element in W or H becomes 0, it must remain 0. & - notoriously slow  \\ 
+   & - lacks optimization properties\\
+   & -the work
+ per iteration is high since each iteration requires $O(mnk)$ work.
+\end{tabular}
+\end{center}   
+\end{frame}
+\begin{frame}
+    \includegraphics[height = 3.0in]{ALS vs MU.jpg}
 \end{frame}
 
 \end{document}
