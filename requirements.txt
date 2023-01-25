@@ -5,3 +5,5 @@ scikit-learn
 nltk
 pandas
 matplotlib
+gensim
+plotly
