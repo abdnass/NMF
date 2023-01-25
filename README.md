@@ -1,8 +1,6 @@
 # Nonnegative Matrix Factorization applied to Topic Extraction
 
-## Quick Start
-
-Clone the repository and install the requirements with `pip install -r requirements.txt` for python >=3.10. Run `test.ipynb` for an examplery topic extraction on a dataset of 18000 newsgroups posts on 20 topics.
+To run the notebook `topic_extraction.ipynb` use python 3.11 and install the required packages with `pip install -r requirements.txt`.
 
 ## Sources
 
