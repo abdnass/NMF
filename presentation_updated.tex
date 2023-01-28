@@ -182,8 +182,7 @@
 % https://reader.elsevier.com/reader/sd/pii/S0167947306004191?token=F24BE1BF6001274548C15E69DB009E58FA9D3E4D129DF5B97744D22E1D0AA4BE582292713D8FC9C3911BBD86A4CEFA60&originRegion=eu-west-1&originCreation=20230124185843
 % https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6709669
 
-\begin{frame}
-    \frametitle{Algorithms for NMF}
+\begin{frame}{Algorithms for NMF}
     \textbf{The Multiplicative Update Rule}
     \begin{align}
         \min_{W,H>0}f(W,H) = \min_{W,H>0} \frac{1}{2}\sum_{i = 1}^{n}\sum_{j= 1}^{m} (A_{ij} - (WH)_{ij})^{2} \label{op}
@@ -192,111 +191,99 @@
     proposed by Lee and Seung (2001):\\
     This algorithm is just a special case of the Gradient Descent with a step size 
     \begin{align*}
-        \epsilon(W_{ia}^{t}) &= \frac{w^{t}_{ia}}{[W^{t}H^{t}(H^{t})^{T}]_{ia}}\hspace{0.1in} \forall i,a\\
-        \epsilon(H_{bj}^{t}) &= \frac{h^{t}_{bj}}{[(W^{t})^{T}W^{t}H^{t}]_{bj}}\forall b,j  
+        \epsilon(W^{t}) &= \frac{W^{t}}{[W^{t}H^{t}(H^{t})^{T}]}\\
+        \epsilon(H^{t}) &= \frac{H^{t}}{[(W^{t})^{T}W^{t}H^{t}]}
     \end{align*}
 \end{frame}
-\begin{frame}
+\begin{frame}{The Multiplicative Update Rule}
+\begin{figure}[ht]
+  \centering
+  \begin{minipage}{.5\linewidth}
     \begin{algorithm}[H]
-    \caption{The Multiplicative Update Rule}
-     \textbf{Initialization:} $w_{ia}^{1}, h_{bj}^{1} > 0 \hspace{0.1in}\forall i,j,a,b$\;
+    \caption{MUR Algorithm}
+     \textbf{Initialization:} $W^{1}, H^{1} > 0$\;
     \For {$t \gets 1,2..\dots$} {
-    $w_{ia}^{t+1} = w_{ia}^{t}\frac{(A(H^{t})^{T})_{ia}}{[W^{t}H^{t}(H^{t})^{T}]_{ia}} \hspace{0.1in}\forall i,a$\;
-    $h_{bj}^{t+1} = h_{bj}^{t}\frac{((W^{t+1})^{T}A)_{ia}}{[(W^{t+1})^{T}W^{t+1}H^{t}]_{bj}} \hspace{0.1in}\forall j,b$\;}
-    \end{algorithm}  
+    $W^{t+1} = W^{t}\frac{(A(H^{t})^{T}}{[W^{t}H^{t}(H^{t})^{T}]} $\;
+    \vspace{0.2in}
+    $H^{t+1} = H^{t}\frac{((W^{t+1})^{T}A)}{[(W^{t+1})^{T}W^{t+1}H^{t}]}$\;}
+    \end{algorithm} 
+    \end{minipage}
+    \end{figure}
 \end{frame}
 
-\begin{frame}
-        This algorithm is a fixed-point type method, meaning that If $[(H^{t})^{T}H^{t}W^{t}]_{ia} \neq 0$ and
-        $w_{ia}^{t+1} = w_{ia}^{t}$, then $(A(H^{t})^{T})_{ia} = [W^{t}H^{t}(H^{t})^{T}]_{ia}$, implies 
-        $\nabla_{W}f(W^{t}, H^{t})_{ia} = 0$.\\
+\begin{frame}{The Multiplicative Update Rule}
+        This algorithm is a fixed-point type method, meaning that If $[(H^{t})^{T}H^{t}W^{t}] \neq 0$ and
+        $W^{t+1} = W^{t}$, then $(A(H^{t})^{T}) = [W^{t}H^{t}(H^{t})^{T}]$, implies 
+        $\nabla_{W}f(W^{t}, H^{t}) = 0$.\\
         Which is part of the KKT condition.
 \end{frame}
-\begin{frame}
-    \frametitle{Proof of convergence of the Multiplicative Update Rule Algorithm}
-    \begin{block}{Theorem Lee and Seung, 2001}
-        The Euclidean distance $||A - WH||$ is non-increasing under the update rules
+\begin{frame}{"Convergence" Theorem}
+    \begin{block}{Theorem Lee and Seung}
+        -The Euclidean distance $||A - WH||$ is non-increasing under the update rules
         \begin{align*}
-            w_{ia} \gets w_{ia}\frac{(AH^{t})_{ia}}{[WH(H)^{T}]_{ia}}, \hspace{0.3in}
-            h_{bj} \gets h_{bj}\frac{(W^{T}A)_{ia}}{[(W)^{T}WH]_{bj}} 
+            W \gets W\frac{(AH^{t})}{[WH(H)^{T}]}, \hspace{0.3in}
+            H \gets H\frac{(W^{T}A)}{[(W)^{T}WH]} 
         \end{align*}
-        The Euclidean distance is invariant under these updates if and only if $W$ and $H$ are at
+        -The Euclidean distance is invariant under these updates if and only if $W$ and $H$ are at
         a stationary point of the distance.
     \end{block}
 \end{frame}
-\begin{frame}
-    \textbf{Weaknesses and modifications:}\\
-    Lee and Seung claim that the limit of the sequence $\{W^{t}, H^{t}\}$ is a 
-    stationary point (i.e., a point satisfying the KKT condition). However, Gonzales and Zhang (2005)
-    indicate that this claim is wrong as having  the cost function non increasing under the update 
-    may not imply the convergence.\\
-    Therefore, this multiplicative update method still lacks optimization properties.\\
-\end{frame}
-\begin{frame}
-    we can only make the following statement about
-    the convergence of the Lee and Seung multiplicative update algorithms: When the algorithm has converged to a
-    limit point, this point is a stationary point.\\\
+\begin{frame}{Weaknesses}
+    - Lee and Seung claim that this Algorithm "Converges" to a stationary point. However, it has been showed in 2005 that this claim is wrong as having  the cost function non increasing may not imply the convergence.\\
+    \vspace{0.2in}
+    - Therefore, the Algorithm still lacks optimization properties.\\
+    \end{frame}
+    \begin{frame}{Weaknesses}
+    - We can only make the following statement about
+    the convergence of this Algorithms: "When the algorithm has converged to a limit point, this point is a stationary point."\\\
     
-    Also it has been repeatedly shown that the convergence is notoriously slow.
+    - Also it has been repeatedly shown that the convergence is notoriously slow.
     \end{frame}
-    \begin{frame}
-    A number of modifications to the original Lee and Seung algorithms have been
-    introduced with the objective to overcome these shortcomings.\\
-    \end{frame}
-    \begin{frame}
-    For instance, Lin in 2007 proposed a modification that is guaranteed to converge to a stationary point,
-    this algorithm requires more work per iteration than the already slow Lee and Seung algorithm.
+    \begin{frame}{Modifications: Convergence vs speed trade-off}
+    - Lin in 2007 proposed a modification that is guaranteed to converge to a stationary point. However, it  requires more work per iteration than the already slow one.\\
+    \vspace{0.2in}
+    - The Fast Multiplicative Update Rule Algorithm in 2014. Which is faster then the two Algorithms in the case of convergence.
 \end{frame}
-\begin{frame}
-    \texrtbf{Fast Multiplicative Update Rule Algorithm by Li-Xin Li, Lin Wu, Hui-Sheng Zhang, and Fang-Xiang Wu (2014)}
-        Li-Xin Li, Lin Wu, Hui-Sheng Zhang, and Fang-Xiang Wu Presented a comparison between the three Algorithms
-        in there paper in 2014.\\
-        Three algorithms are programmed in MATLAB R2013a and run on a computer with the following specifications: 
-        a processor of Intel Core 2 Quad CPU Q9450 at 2.66 GHZ 2.67 GHZ and a RAM of 4 GB (3.72 GB usable)
-        \textbf{Note:}\\ 
+\begin{frame}{Comparison of the the three Algorithms}
+    \includegraphics[height = 2.3in]{table.jpg}\\
+    \source{Source: "A Fast Algorithm for Non-negative Matrix Factorization and Its Convergence", Li, Wu, and Zhang.}
 \end{frame}
-\begin{frame}
-    \includegraphics[height = 3in]{table.jpg}
-\end{frame}
-\begin{frame}
-    \frametitle{Alternating Non-negative Least Squares (ANLS)}
-    In this algorithms, a least squares step is followed by another least squares step in an alternating fashion, thus giving rise to the ALS name.\\
-    The Alternating Least Squares - ALS algorithms were first introduced by Paatero 1994 , 
-    who initially invented the whole NMF theory.
+\begin{frame}{Alternating Non-negative Least Squares (ANLS)}
+    - In this algorithms, a least squares step is followed by another least squares step in an alternating fashion, thus giving rise to the ALS name.\\
+    - The Alternating Least Squares - ALS algorithms were first introduced by Paatero 1994 , 
+    who initially invented the whole NMF Theory.
     \begin{algorithm}[H]
         \caption{Basic ALS for NMF}
         \textbf{Initialization:} $W > 0$\;
         \For {t \gets 1, 2\dots}{
             Solve for H the LS equation $W^{T}WH = W^{T}A$\;
-            Set all negative elements of in H to 0\;
+            Set all negative elements in H to 0\;
             Solve for W the LS equation $WHH^{T} = AH^{T}$\;
-            Set all negative elements of in W to 0\;
+            Set all negative elements in W to 0\;
         } 
     \end{algorithm}
 \end{frame}
-\begin{frame}
+\begin{frame}{Convergence Theorem}
     \begin{theorem}
-        Any limit point of the sequence $\{W^{t} , H^{t}\}$ generated by ALS Algorithm  is a stationary point of (\ref{op}).
+        Any limit point of the sequence $\{W^{t} , H^{t}\}$ generated by ALS Algorithm  is a stationary point.
     \end{theorem}
     \end{frame}
     \begin{frame}{Comparison between ANLS and MU}
-    \begin{center}
-\begin{tabular}{ | m{20em} | m{20em} |} 
-  \hline
-  \textbf{ANLS}& \textbf{MU}  \\ 
-  \hline
-  - Can be very fast depending on the implementation & -easy to use  \\ 
-  - aids sparsity & \\ 
-  \hline
-  - once an element in W or H becomes 0, it must remain 0. & - notoriously slow  \\ 
-   & - lacks optimization properties\\
-   & -the work
- per iteration is high since each iteration requires $O(mnk)$ work.
-\end{tabular}
-\end{center}   
+\begin{tabular}{|l|l|}
+    \hline
+    \multicolumn{1}{|c|}{ANLS} & MU \\
+    \hline
+    + Can be very fast depending on the implementation & + Easy to use  \\
+    + Aids sparsity &  \\
+    \hline
+    -  Once an element in W or H becomes 0, it must remain 0. & - Notoriously slow \\
+      & - Lacks optimization properties.\\
+    \hline
+\end{tabular}   
 \end{frame}
-\begin{frame}
-    \includegraphics[height = 3.0in]{ALS vs MU.jpg}
+\begin{frame}{Comparison between ANLS and MU}
+    \includegraphics[height = 2.5in]{comparison.png}\\
+    \source{Source: "Fast optimization of non-negative matrix tri-factorization", Zupan, Zitnik}
 \end{frame}
 
 \end{document}
