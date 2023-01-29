@@ -189,10 +189,10 @@
     \end{align}
     The most used approach to minimize (1) is a simple multiplicative update method
     proposed by Lee and Seung (2001):\\
-    This algorithm is just a special case of the Gradient Descent with a step size 
+    This algorithm is just a special case of Gradient Descent with a step size 
     \begin{align*}
-        \epsilon(W^{t}) &= \frac{W^{t}}{[W^{t}H^{t}(H^{t})^{T}]}\\
-        \epsilon(H^{t}) &= \frac{H^{t}}{[(W^{t})^{T}W^{t}H^{t}]}
+        \epsilon(W^{t}) &= \frac{W^{t}}{W^{t}H^{t}(H^{t})^{T}}\\
+        \epsilon(H^{t}) &= \frac{H^{t}}{(W^{t})^{T}W^{t}H^{t}}
     \end{align*}
 \end{frame}
 \begin{frame}{The Multiplicative Update Rule}
@@ -203,49 +203,49 @@
     \caption{MUR Algorithm}
      \textbf{Initialization:} $W^{1}, H^{1} > 0$\;
     \For {$t \gets 1,2..\dots$} {
-    $W^{t+1} = W^{t}\frac{(A(H^{t})^{T}}{[W^{t}H^{t}(H^{t})^{T}]} $\;
+    $W^{t+1} = W^{t}\frac{A(H^{t})^{T}}{W^{t}H^{t}(H^{t})^{T}} $\;
     \vspace{0.2in}
-    $H^{t+1} = H^{t}\frac{((W^{t+1})^{T}A)}{[(W^{t+1})^{T}W^{t+1}H^{t}]}$\;}
+    $H^{t+1} = H^{t}\frac{(W^{t+1})^{T}A}{(W^{t+1})^{T}W^{t+1}H^{t}}$\;}
     \end{algorithm} 
     \end{minipage}
     \end{figure}
 \end{frame}
 
 \begin{frame}{The Multiplicative Update Rule}
-        This algorithm is a fixed-point type method, meaning that If $[(H^{t})^{T}H^{t}W^{t}] \neq 0$ and
-        $W^{t+1} = W^{t}$, then $(A(H^{t})^{T}) = [W^{t}H^{t}(H^{t})^{T}]$, implies 
-        $\nabla_{W}f(W^{t}, H^{t}) = 0$.\\
-        Which is part of the KKT condition.
+        This algorithm is a type of fixed-point method, meaning that if $(H^{t})^{T} H^{t} W^{t} \neq 0$ and
+        $W^{t+1} = W^{t}$, then $A(H^{t})^{T} = W^{t}H^{t}(H^{t})^{T}$ implies 
+        $\nabla_{W}f(W^{t}, H^{t}) = 0$,\\
+        which is part of the KKT condition.
 \end{frame}
 \begin{frame}{"Convergence" Theorem}
     \begin{block}{Theorem Lee and Seung}
         -The Euclidean distance $||A - WH||$ is non-increasing under the update rules
         \begin{align*}
-            W \gets W\frac{(AH^{t})}{[WH(H)^{T}]}, \hspace{0.3in}
-            H \gets H\frac{(W^{T}A)}{[(W)^{T}WH]} 
+            W \gets W\frac{AH^T}{WHH^T}, \hspace{0.3in}
+            H \gets H\frac{W^T A}{W^T WH} 
         \end{align*}
         -The Euclidean distance is invariant under these updates if and only if $W$ and $H$ are at
         a stationary point of the distance.
     \end{block}
 \end{frame}
 \begin{frame}{Weaknesses}
-    - Lee and Seung claim that this Algorithm "Converges" to a stationary point. However, it has been showed in 2005 that this claim is wrong as having  the cost function non increasing may not imply the convergence.\\
+    - Lee and Seung claim that this algorithm "converges" to a stationary point. However, it has been shown in 2005 that this claim is wrong, as having the cost function non-increasing may not imply convergence.\\
     \vspace{0.2in}
-    - Therefore, the Algorithm still lacks optimization properties.\\
+    - Therefore, the algorithm still lacks optimization properties.\\
     \end{frame}
     \begin{frame}{Weaknesses}
     - We can only make the following statement about
-    the convergence of this Algorithms: "When the algorithm has converged to a limit point, this point is a stationary point."\\\
+    the convergence of these algorithms: "When the algorithm has converged to a limit point, this point is a stationary point."\\\
     
     - Also it has been repeatedly shown that the convergence is notoriously slow.
     \end{frame}
-    \begin{frame}{Modifications: Convergence vs speed trade-off}
-    - Lin in 2007 proposed a modification that is guaranteed to converge to a stationary point. However, it  requires more work per iteration than the already slow one.\\
+    \begin{frame}{Modifications: Convergence vs. speed trade-off}
+    - Lin in 2007 proposed a modification that is guaranteed to converge to a stationary point. However, it requires more work per iteration so it is even slower.\\
     \vspace{0.2in}
-    - The Fast Multiplicative Update Rule Algorithm in 2014. Which is faster then the two Algorithms in the case of convergence.
+    - The Fast Multiplicative Update Rule Algorithm from 2014 is faster than the two algorithms in the case of convergence.
 \end{frame}
 \begin{frame}{Comparison of the the three Algorithms}
-    \includegraphics[height = 2.3in]{table.jpg}\\
+    \being{center}\includegraphics[height = 2.3in]{table.jpg}\end{center}\\
     \source{Source: "A Fast Algorithm for Non-negative Matrix Factorization and Its Convergence", Li, Wu, and Zhang.}
 \end{frame}
 \begin{frame}{Alternating Non-negative Least Squares (ANLS)}
